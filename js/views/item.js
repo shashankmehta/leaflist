@@ -7,6 +7,7 @@ app.ItemView = Backbone.View.extend({
 	template: _.template( $('#item-template').html() ),
 
 	events: {
+		'click label': 'edit',
 		'keypress label': 'updateOnEnter',
 		'blur label': 'close'
 	},
