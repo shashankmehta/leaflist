@@ -8,7 +8,8 @@ app.PageView = Backbone.View.extend({
         'click #new-item': 'clearInput',
         'keydown #new-item': 'keyEvents',
         'blur #new-item': 'checkPrompt',
-        'click #clear': 'clearAll'
+        'click #clear': 'clearAll',
+        'click .addItem': 'addBetween'
     },
 
     initialize: function(){
@@ -23,6 +24,7 @@ app.PageView = Backbone.View.extend({
         var temp = this.$input.detach();
         this.$list.append(temp);
         this.$list.find('#new-item label').html('Add an Item');
+        this.$list.append('<button class="addItem level1"></button>');
    },
 
     clearInput: function(){
@@ -64,7 +66,8 @@ app.PageView = Backbone.View.extend({
         else {
             var parent = this.$('#dlist li label:[data-id=' + item.attributes.parent + ']').parent();
             if(!$(parent).find('ul')[0]){
-                $(parent).append('<ul></ul>');
+                var sublistTpl = _.template($('#sublist-template').html());
+                $(parent).append(sublistTpl());
             }
             this.$('#dlist li label:[data-id=' + item.attributes.parent + ']').parent().find('ul').append(view.render().el);
         }
@@ -72,10 +75,11 @@ app.PageView = Backbone.View.extend({
     },
 
     addAll: function(){
-         var temp = this.$input.detach();
+        var temp = this.$input.detach();
         this.$list.html('');
         this.$list.append(temp);
         this.$input.find('label').html('Add an Item');
+        this.$list.append('<button class="addItem level1"></button>');
         app.List.each(this.addOne, this);
     },
 
@@ -125,6 +129,7 @@ app.PageView = Backbone.View.extend({
         }
         var attr = this.newAttributes();
         app.List.create(attr);
+
         this.positionInput($('#dlist li label:[data-id=' + attr.id +']').parent());
         this.$input.find('label').html('&nbsp;');
         this.$input.find('label').focus();
@@ -135,7 +140,8 @@ app.PageView = Backbone.View.extend({
         if(parentId === 0){
             var parent = this.$input.prev();
             if(!$(parent).find('ul')[0]){
-                $(parent).append('<ul></ul>');
+                var sublistTpl = _.template($('#sublist-template').html());
+                $(parent).append(sublistTpl());
             }
             $(parent).find('ul').append($('#new-item'));
             if(!this.inputVal() || this.inputVal() === 'Add an Item'){
@@ -154,6 +160,18 @@ app.PageView = Backbone.View.extend({
                 this.$input.find('label').html('&nbsp;');
             }
             this.$input.find('label').focus().setCursorToEnd();
+        }
+    },
+
+    addBetween: function(e){
+        if($(e.target).hasClass('level1')){
+            var temp = this.$input.detach();
+            this.$list.append(temp);
+            this.$input.find('label').html('&nbsp;');
+            this.$input.find('label').focus();
+        }
+        else {
+            this.positionInput($(e.target).parent().find('ul li').last(), true);
         }
     }
 

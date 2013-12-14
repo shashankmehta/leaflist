@@ -9,9 +9,9 @@ app.ItemView = Backbone.View.extend({
 	events: {
 		'keypress label': 'updateOnEnter',
 		'blur label': 'close',
-		'click button': 'delete',
-		'mouseover label, button': 'addClass',
-		'mouseout label, button': 'removeClass'
+		'click .destroy': 'delete',
+		'mouseover label, .destroy': 'addClass',
+		'mouseout label, .destroy': 'removeClass'
 	},
 
 	initialize: function(){
