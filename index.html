@@ -14,7 +14,7 @@
 			<h1>List</h1>
 
 		<section id="main">
-			<ul id="dlist">
+			<ul id="dlist" data-id="0">
 				<li id="new-item">
 					<label contenteditable>Add an Item</label>
 				</li>
@@ -23,9 +23,7 @@
 	</section>
 
 	<script type="text/template" id="item-template">
-		<div class="view">
-			<label contenteditable data-id=<%- id%>><%- title %></label>
-		</div>
+		<label contenteditable data-id=<%- id%>><%- title %></label>
 	</script>
 
 	<script src="js/lib/jquery.min.js"></script>

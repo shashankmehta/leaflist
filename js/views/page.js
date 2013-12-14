@@ -6,8 +6,8 @@ app.PageView = Backbone.View.extend({
 
     events: {
         'click #new-item': 'clearInput',
-        'keypress #new-item': 'createOnEnter',
-        'blur #new-item': 'positionInput',
+        'keydown #new-item': 'keyEvents',
+        // 'blur #new-item': 'positionInput',
         'click #clear': 'clearAll'
     },
 
@@ -33,7 +33,16 @@ app.PageView = Backbone.View.extend({
 
     addOne: function(item){
         var view = new app.ItemView({model: item});
-        this.$list.append(view.render().el);
+        if(item.attributes.parent == 0){
+            this.$list.append(view.render().el);
+        }
+        else {
+            var parent = this.$('#dlist li label:[data-id=' + item.attributes.parent + ']').parent();
+            if(!$(parent).find('ul')[0]){
+                $(parent).append('<ul></ul>');
+            }
+            this.$('#dlist li label:[data-id=' + item.attributes.parent + ']').parent().find('ul').append(view.render().el);
+        }
         this.positionInput();
     },
 
@@ -45,21 +54,12 @@ app.PageView = Backbone.View.extend({
         app.List.each(this.addOne, this);
     },
 
-    createOnEnter: function(event) {
-        if (event.which !== ENTER_KEY || !this.$input.find('label').html().trim().stripTags()) {
-            return;
-        }
-        app.List.create(this.newAttributes());
-        event.preventDefault();
-        this.$input.find('label').html('&nbsp;');
-        this.$input.find('label').focus();
-    },
-
     newAttributes: function() {
+        var parent = this.$input.parent('ul').data('id') !== undefined ? this.$input.parent('ul').data('id') : this.$input.parent().parent().find('label').data('id');
         return {
-            title: this.$input.find('label').html().trim().stripTags(),
+            title: this.$input.find('label').html().stripTags().trim(),
             id: app.List.nextOrder(),
-            parent: this.$list.find('li').last().find('label').data('id')
+            parent: parent
         };
     },
 
@@ -73,6 +73,42 @@ app.PageView = Backbone.View.extend({
             item.destroy();
         })
         app.List.reset();
+    },
+
+    keyEvents: function(e){
+        switch(e.keyCode){
+            case 13:
+                this.createOnEnter();
+                break;
+
+            case 9:
+                e.preventDefault();
+                this.indent();
+        }
+    },
+
+    createOnEnter: function() {
+        if (!this.$input.find('label').html().stripTags().trim()) {
+            return;
+        }
+        app.List.create(this.newAttributes());
+        event.preventDefault();
+        this.$input.find('label').html('&nbsp;');
+        this.$input.find('label').focus();
+    },
+
+    indent: function(){
+        var parent = this.$input.prev();
+        // console.log($(parent).find('ul')[0]);
+        if(!$(parent).find('ul')[0]){
+            $(parent).append('<ul></ul>');
+        }
+        $(parent).find('ul').append($('#new-item'));
+
+        if(!this.$input.find('label').html().stripTags().trim()){  
+            this.$input.find('label').html('&nbsp;');
+        }
+        this.$input.find('label').focus().setCursorToEnd();
     }
 
 })

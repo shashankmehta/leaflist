@@ -18,6 +18,18 @@ String.prototype.stripTags = function(){
 	};
 }( );
 
+$.fn.setCursorToEnd = function(){
+	return this.each(function(){
+		var ele = $(this).get(0);
+		var range = document.createRange();
+		var sel = window.getSelection();
+		range.setStart(ele, 1);
+		range.collapse(true);
+		sel.removeAllRanges();
+		sel.addRange(range);
+	});
+};
+
 
 $(function() {
 	new app.PageView();
