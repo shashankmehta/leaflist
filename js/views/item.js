@@ -7,18 +7,22 @@ app.ItemView = Backbone.View.extend({
 	template: _.template( $('#item-template').html() ),
 
 	events: {
-		'click label': 'edit',
 		'keypress label': 'updateOnEnter',
-		'blur label': 'close'
+		'blur label': 'close',
+		'click button': 'delete',
+		'mouseover label, button': 'addClass',
+		'mouseout label, button': 'removeClass'
 	},
 
 	initialize: function(){
 		this.listenTo(this.model, 'change', this.render);
+		this.listenTo(this.model, 'destroy', this.remove);
 	},
 
 	render: function(){
 		this.$el.html( this.template( this.model.toJSON() ) );
 		this.$label = this.$('label');
+		this.$button = this.$('button')
 		return this;
 	},
 
@@ -34,10 +38,21 @@ app.ItemView = Backbone.View.extend({
 		if(val){
 			this.model.save({title: val});
 		}
+		this.$button.removeClass('active');
 	},
 
-	parent: function(){
-		var obj = this.$el.prev();
-	}
+	delete: function(e){
+		e.stopPropagation();
+		this.model.destroy();
+	},
 
+	addClass: function(e){
+		e.stopPropagation();
+		this.$button.addClass('active');
+	},
+
+	removeClass: function(e){
+		e.stopPropagation();
+		this.$button.removeClass('active');
+	}
 });

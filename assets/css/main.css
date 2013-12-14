@@ -1,3 +1,83 @@
 label:focus {
 	outline: none;
 }
+
+#dlist button {
+	height: 15px;
+	opacity: 0;
+	font-size: 15px;
+	position: absolute;
+	left: -20px;
+	top: 1px;
+	/*color: #a88a8a;*/
+	-webkit-transition: all 0.2s;
+	transition: all 0.2s;
+	outline: none;
+	cursor: pointer;
+}
+
+button {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: none;
+	font-size: 100%;
+	vertical-align: baseline;
+	font-family: inherit;
+	color: inherit;
+	-webkit-appearance: none;
+	-ms-appearance: none;
+	-o-appearance: none;
+	appearance: none;
+}
+
+#dlist button:after {
+	content: '✖';
+}
+
+#dlist button.active {
+	opacity: 1;
+	-webkit-transform: scale(1.3);
+	-ms-transform: scale(1.3);
+	transform: scale(1.3);
+}
+
+#main {
+	width: 500px;
+}
+
+li {
+	position: relative;
+	width: 400px;
+}
+
+#todo li .destroy {
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 10px;
+	bottom: 0;
+	width: 40px;
+	height: 40px;
+	margin: auto 0;
+	font-size: 22px;
+	color: #a88a8a;
+	-webkit-transition: all 0.2s;
+	transition: all 0.2s;
+}
+
+#todo li .destroy:hover {
+	text-shadow: 0 0 1px #000,
+				 0 0 10px rgba(199, 107, 107, 0.8);
+	-webkit-transform: scale(1.3);
+	-ms-transform: scale(1.3);
+	transform: scale(1.3);
+}
+
+#todo li .destroy:after {
+	content: '✖';
+}
+
+#todo li:hover .destroy {
+	display: block;
+}

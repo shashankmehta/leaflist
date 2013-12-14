@@ -7,7 +7,7 @@ app.PageView = Backbone.View.extend({
     events: {
         'click #new-item': 'clearInput',
         'keydown #new-item': 'keyEvents',
-        // 'blur #new-item': 'positionInput',
+        'blur #new-item': 'checkPrompt',
         'click #clear': 'clearAll'
     },
 
@@ -17,18 +17,43 @@ app.PageView = Backbone.View.extend({
         this.$list = this.$('#dlist');
         this.listenTo(app.List, 'add', this.addOne);
         this.listenTo(app.List, 'reset', this.addAll);
+        this.listenTo(app.List, 'destroy', this.checkInput);
 
         app.List.fetch();
-    },
+        var temp = this.$input.detach();
+        this.$list.append(temp);
+        this.$list.find('#new-item label').html('Add an Item');
+   },
 
     clearInput: function(){
         this.$input.find('label').html('');
     },
 
-    positionInput: function(){
+    checkPrompt: function(){
+        if(!this.inputVal()){
+            this.$input.find('label').html('Add an Item');
+        }
+    },
+
+    checkInput: function(){
+        if(!$('#new-item').exists()){
+            this.$list.append(this.$input);
+        }
+    },
+
+    inputVal: function(){
+        return this.$input.find('label').html().stripTags().trim();
+    },
+
+    positionInput: function(obj, focus){
         var temp = this.$input.detach();
-        this.$list.append(temp);
-        this.$input.find('label').html('Add an Item');
+        $(obj).after(temp);
+        $(obj).find('#new-item label').html('Add an Item');
+
+        if(focus){
+            this.$input.find('label').html('&nbsp;');
+            this.$input.find('label').focus();
+        }
     },
 
     addOne: function(item){
@@ -43,7 +68,7 @@ app.PageView = Backbone.View.extend({
             }
             this.$('#dlist li label:[data-id=' + item.attributes.parent + ']').parent().find('ul').append(view.render().el);
         }
-        this.positionInput();
+        // this.positionInput();
     },
 
     addAll: function(){
@@ -57,7 +82,7 @@ app.PageView = Backbone.View.extend({
     newAttributes: function() {
         var parent = this.$input.parent('ul').data('id') !== undefined ? this.$input.parent('ul').data('id') : this.$input.parent().parent().find('label').data('id');
         return {
-            title: this.$input.find('label').html().stripTags().trim(),
+            title: this.inputVal(),
             id: app.List.nextOrder(),
             parent: parent
         };
@@ -83,32 +108,53 @@ app.PageView = Backbone.View.extend({
 
             case 9:
                 e.preventDefault();
-                this.indent();
+                if(!e.shiftKey){
+                    this.indent();
+                }
+                else {
+                    this.outdent();
+                }
+                break;
         }
     },
 
     createOnEnter: function() {
-        if (!this.$input.find('label').html().stripTags().trim()) {
+        event.preventDefault();
+        if (!this.inputVal()) {
             return;
         }
-        app.List.create(this.newAttributes());
-        event.preventDefault();
+        var attr = this.newAttributes();
+        app.List.create(attr);
+        this.positionInput($('#dlist li label:[data-id=' + attr.id +']').parent());
         this.$input.find('label').html('&nbsp;');
         this.$input.find('label').focus();
     },
 
     indent: function(){
-        var parent = this.$input.prev();
-        // console.log($(parent).find('ul')[0]);
-        if(!$(parent).find('ul')[0]){
-            $(parent).append('<ul></ul>');
+        var parentId = this.$input.parent('ul').data('id') !== undefined ? this.$input.parent('ul').data('id') : this.$input.parent().parent().find('label').data('id');
+        if(parentId === 0){
+            var parent = this.$input.prev();
+            if(!$(parent).find('ul')[0]){
+                $(parent).append('<ul></ul>');
+            }
+            $(parent).find('ul').append($('#new-item'));
+            if(!this.inputVal() || this.inputVal() === 'Add an Item'){
+                this.$input.find('label').html('&nbsp;');
+            }
+            this.$input.find('label').focus().setCursorToEnd();
         }
-        $(parent).find('ul').append($('#new-item'));
+    },
 
-        if(!this.$input.find('label').html().stripTags().trim()){  
-            this.$input.find('label').html('&nbsp;');
+    outdent: function(){
+        var parentId = this.$input.parent('ul').data('id') !== undefined ? this.$input.parent('ul').data('id') : this.$input.parent().parent().find('label').data('id');
+        if(parentId !== 0){
+            var parent = this.$input.parent().parent();
+            $(parent).after($('#new-item'));
+            if(!this.inputVal() || this.inputVal() === 'Add an Item'){
+                this.$input.find('label').html('&nbsp;');
+            }
+            this.$input.find('label').focus().setCursorToEnd();
         }
-        this.$input.find('label').focus().setCursorToEnd();
     }
 
 })
