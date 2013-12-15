@@ -3,13 +3,18 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
+    Shashank Mehta  -- @leostatic -- http://shashankmehta.in
 
 # THANKS
 
-    <name>
+    Jeremy Ashkenas for Backbone and Underscore, dude you are brilliant!
+    jQuery Team, you guys are awesome too!
+    Addy Osmani for Backbone Fundamentals book
 
 # TECHNOLOGY COLOPHON
 
     HTML5, CSS3
     jQuery, Modernizr
+    Backbone, Underscore
+    Firebase, Backfire
+    PureCSS, SASS
