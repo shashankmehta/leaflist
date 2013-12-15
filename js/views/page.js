@@ -149,6 +149,7 @@ app.PageView = Backbone.View.extend({
             if(!this.inputVal() || this.inputVal() === 'Add an Item'){
                 this.$input.find('label').html('&nbsp;');
             }
+            this.$input.addClass('active');
             this.$input.find('label').focus().setCursorToEnd();
         }
     },
@@ -161,6 +162,7 @@ app.PageView = Backbone.View.extend({
             if(!this.inputVal() || this.inputVal() === 'Add an Item'){
                 this.$input.find('label').html('&nbsp;');
             }
+            this.$input.addClass('active');
             this.$input.find('label').focus().setCursorToEnd();
         }
     },
