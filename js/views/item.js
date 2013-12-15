@@ -20,7 +20,7 @@ app.ItemView = Backbone.View.extend({
 	},
 
 	render: function(){
-		this.$el.html( this.template( this.model.toJSON() ) );
+		this.$el.html( this.template(this.model.toJSON()));
 		this.$label = this.$('label');
 		this.$button = this.$('button')
 		return this;
@@ -39,7 +39,7 @@ app.ItemView = Backbone.View.extend({
 		}
 		var val = this.$label.html().stripTags().trim();
 		if(val){
-			this.model.save({'title': val});
+			this.model.set({'title': val});
 		}
 		// this.$button.removeClass('active');
 	},
