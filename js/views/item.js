@@ -33,12 +33,15 @@ app.ItemView = Backbone.View.extend({
 		}
 	},
 
-	close: function(){
-		val = this.$label.html().stripTags().trim();
+	close: function(e){
+		if(e.target.parentElement.id === "new-item"){
+			return;
+		}
+		var val = this.$label.html().stripTags().trim();
 		if(val){
 			this.model.save({'title': val});
 		}
-		this.$button.removeClass('active');
+		// this.$button.removeClass('active');
 	},
 
 	delete: function(e){

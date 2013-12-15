@@ -48,6 +48,9 @@ app.PageView = Backbone.View.extend({
     },
 
     positionInput: function(obj, focus){
+        if($(obj).is('#new-item')){
+            obj = $(obj).prev();
+        }
         var temp = this.$input.detach();
         $(obj).after(temp);
         $(obj).find('#new-item label').html('Add an Item');
