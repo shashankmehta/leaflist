@@ -39,7 +39,7 @@ body {
     font-weight: normal; }
 
 #main {
-  padding-bottom: 10px; }
+  padding-bottom: 30px; }
 
 #dlist {
   font-family: Open Sans, sans-serif;
@@ -80,6 +80,12 @@ body {
       position: absolute;
       bottom: -20px;
       top: initial; }
+
+#new-item {
+  display: none; }
+
+#new-item.active {
+  display: list-item; }
 
 .footer {
   margin-top: 50px;

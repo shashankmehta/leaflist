@@ -75,7 +75,7 @@ body {
 }
 
 #main {
-	padding-bottom: 10px;
+	padding-bottom: 30px;
 }
 
 #dlist  {
@@ -129,6 +129,14 @@ body {
 			top: initial;
 		}
 	}
+}
+
+#new-item {
+	display: none;
+}
+
+#new-item.active {
+	display: list-item;
 }
 
 .footer {

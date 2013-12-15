@@ -1,10 +1,11 @@
 var app = app || {};
 
-var List = Backbone.Collection.extend({
+var List = Backbone.Firebase.Collection.extend({
 
 	model: app.Item,
 
-	localStorage: new Backbone.LocalStorage('disposable-list'),
+	// localStorage: new Backbone.LocalStorage('disposable-list'),
+	firebase: "https://leaflist.firebaseio.com",
 
 	nextOrder: function() {
 	      if (!this.length) {
