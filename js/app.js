@@ -53,5 +53,12 @@ $(function() {
 	Backbone.history.start();
 	
 	app.List = app.ListCollection(app.listId);
+
+	app.List.once('sync', function(){
+		$('div.loader').remove();
+		$('section.loader').removeClass('loader')
+	});
+	
 	new app.PageView();
+
 });

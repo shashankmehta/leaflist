@@ -8,6 +8,12 @@ app.ListCollection = function(id){
 		// localStorage: new Backbone.LocalStorage('disposable-list'),
 		firebase: new Firebase("https://leaflist.firebaseio.com/" + id),
 
+		initialize: function(){
+			this.listenTo(this, 'sync', function(){
+				// console.log("synced");
+			});
+		},
+
 		nextOrder: function() {
 		      if (!this.length) {
 				return 1;

@@ -43,6 +43,7 @@ h1, h2, h3, h4, h5, h6 {
 		box-sizing: border-box;
 		padding: 10px 20px;
 		box-shadow: 0px 0px 5px 3px #ccc;
+		margin-bottom: 25px;
 	}
 }
 
@@ -75,8 +76,25 @@ body {
 }
 
 #main {
-	padding-bottom: 30px;
+	padding-bottom: 50px;
+	
+	&.loader {
+		display: none;
+	}
 }
+
+div.loader {
+	text-align: center;
+	margin-top: 25px;
+	margin-bottom: 50px;
+}
+
+.note {
+	display: none;
+	text-align: center;
+	padding-top: 20px;
+}
+
 
 #dlist  {
 	font-family: Open Sans, sans-serif;
@@ -131,6 +149,10 @@ body {
 	}
 }
 
+section.buttons {
+	text-align: center;
+}
+
 #new-item {
 	display: none;
 }
@@ -140,9 +162,10 @@ body {
 }
 
 .footer {
-	margin-top: 50px;
+	margin-top: 25px;
 	font-size: 0.6em;
 	color: #777;
+	text-align: center;
 
 	a {
 		color: inherit;
@@ -152,6 +175,14 @@ body {
 			color: black;
 			@include transition(all, 0.2s, ease-in-out);
 		}
+	}
+
+	.about{
+		padding-left: 0px;
+	}
+
+	span{
+		padding-left: 10px;
 	}
 }
 
@@ -178,14 +209,19 @@ button {
 	appearance: none;
 }
 
-.pure-button-error {
+.pure-button.small {
+	padding: 5px 10px;
+	font-size: 0.8em;
+}
+
+.pure-button-error{
       background: rgb(202, 60, 60);
       color: white;
 }
 
-.pure-button.small {
-	padding: 5px 10px;
-	font-size: 0.8em;
+.pure-button-secondary {
+	background: rgb(66, 184, 221);
+      color: white;
 }
 
 // ============= /COMPONENTS ============== //
