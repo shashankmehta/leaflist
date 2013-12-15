@@ -35,6 +35,23 @@ $.fn.exists = function () {
 };
 
 
+app.listId = (function(){
+	var ID_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	var ID_LENGTH     = 7;
+
+	var id = '';
+	for (var x = 0; x < ID_LENGTH; x++) {
+		id += ID_CHARACTERS.charAt(Math.floor(Math.random() * 62));
+	}
+
+	return id;
+}());
+
+
 $(function() {
+	var leafListRouter = new LeafListRouter();
+	Backbone.history.start();
+	
+	app.List = app.ListCollection(app.listId);
 	new app.PageView();
 });

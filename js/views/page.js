@@ -18,9 +18,11 @@ app.PageView = Backbone.View.extend({
         this.$list = this.$('#dlist');
         this.listenTo(app.List, 'add', this.addOne);
         this.listenTo(app.List, 'reset', this.addAll);
-        this.listenTo(app.List, 'destroy', this.checkInput);
+        this.listenTo(app.List, 'remove', this.checkInput);
 
-        app.List.fetch();
+        // Not needed anymore due to backbone.firebase.collection's auto syncing
+        // app.List.fetch();
+
         var temp = this.$input.detach();
         this.$list.append(temp);
         this.$list.find('#new-item label').html('Add an Item');
@@ -32,9 +34,7 @@ app.PageView = Backbone.View.extend({
     },
 
     checkPrompt: function(){
-        if(!this.inputVal()){
-            this.$input.find('label').html('Add an Item');
-        }
+        this.$input.removeClass('active');
     },
 
     checkInput: function(){
@@ -48,6 +48,9 @@ app.PageView = Backbone.View.extend({
     },
 
     positionInput: function(obj, focus){
+        if($(obj).is('#new-item')){
+            obj = $(obj).prev();
+        }
         var temp = this.$input.detach();
         $(obj).after(temp);
         $(obj).find('#new-item label').html('Add an Item');
@@ -99,7 +102,8 @@ app.PageView = Backbone.View.extend({
         })
 
         _.each(list, function(item){
-            item.destroy();
+            // item.destroy();
+            app.List.remove({'id': item.get('id')});
         })
         app.List.reset();
     },
@@ -107,7 +111,8 @@ app.PageView = Backbone.View.extend({
     keyEvents: function(e){
         switch(e.keyCode){
             case 13:
-                this.createOnEnter();
+                this.createItem();
+                e.preventDefault();
                 break;
 
             case 9:
@@ -122,8 +127,7 @@ app.PageView = Backbone.View.extend({
         }
     },
 
-    createOnEnter: function() {
-        event.preventDefault();
+    createItem: function() {
         if (!this.inputVal()) {
             return;
         }
@@ -131,6 +135,7 @@ app.PageView = Backbone.View.extend({
         app.List.create(attr);
 
         this.positionInput($('#dlist li label:[data-id=' + attr.id +']').parent());
+        this.$input.addClass('active')
         this.$input.find('label').html('&nbsp;');
         this.$input.find('label').focus();
     },
@@ -147,6 +152,7 @@ app.PageView = Backbone.View.extend({
             if(!this.inputVal() || this.inputVal() === 'Add an Item'){
                 this.$input.find('label').html('&nbsp;');
             }
+            this.$input.addClass('active');
             this.$input.find('label').focus().setCursorToEnd();
         }
     },
@@ -159,6 +165,7 @@ app.PageView = Backbone.View.extend({
             if(!this.inputVal() || this.inputVal() === 'Add an Item'){
                 this.$input.find('label').html('&nbsp;');
             }
+            this.$input.addClass('active');
             this.$input.find('label').focus().setCursorToEnd();
         }
     },
@@ -167,10 +174,12 @@ app.PageView = Backbone.View.extend({
         if($(e.target).hasClass('level1')){
             var temp = this.$input.detach();
             this.$list.append(temp);
+            this.$input.addClass('active');
             this.$input.find('label').html('&nbsp;');
             this.$input.find('label').focus();
         }
         else {
+            this.$input.addClass('active');
             this.positionInput($(e.target).parent().find('ul li').last(), true);
         }
     }

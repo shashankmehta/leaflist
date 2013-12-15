@@ -16,7 +16,7 @@ app.ItemView = Backbone.View.extend({
 
 	initialize: function(){
 		this.listenTo(this.model, 'change', this.render);
-		this.listenTo(this.model, 'destroy', this.remove);
+		this.listenTo(this.model, 'remove', this.remove);
 	},
 
 	render: function(){
@@ -33,17 +33,20 @@ app.ItemView = Backbone.View.extend({
 		}
 	},
 
-	close: function(){
-		var val = this.$label.html().trim().stripTags();
-		if(val){
-			this.model.save({title: val});
+	close: function(e){
+		if(e.target.parentElement.id === "new-item"){
+			return;
 		}
-		this.$button.removeClass('active');
+		var val = this.$label.html().stripTags().trim();
+		if(val){
+			this.model.save({'title': val});
+		}
+		// this.$button.removeClass('active');
 	},
 
 	delete: function(e){
 		e.stopPropagation();
-		this.model.destroy();
+		app.List.remove({'id': this.model.get('id')});
 	},
 
 	addClass: function(e){
