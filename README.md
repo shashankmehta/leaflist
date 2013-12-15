@@ -4,7 +4,7 @@
 
 Have you ever wanted to quickly share a list with a friend without having to go through the troubles of login or sharing from your personal note taking app? Leaf List allows you to quickly create lists and share with your friends.
 
-This isn't a finished product. I just wanted to learn Backbone. This app is rough around the edges, I made this in 3 sittings.
+This isn't a finished product, I just wanted to learn Backbone. This app is rough around the edges, I made this in 3 sittings.
 
 
 ###Tech Stack
@@ -19,7 +19,7 @@ This isn't a finished product. I just wanted to learn Backbone. This app is roug
 
 ###Shortcuts
 
-`Tab` to indent
+`Tab` to indent    
 `Shift + Tab` to outdent
 
 
@@ -27,4 +27,14 @@ This isn't a finished product. I just wanted to learn Backbone. This app is roug
 
 1. Clone
 2. Change the firebase url in `js/collections/list.js`
-3. That's it. No server needed!
+3. That's it. No server needed! Just open in your browser or host it on GitHub Pages!
+
+###Author
+
+Shashank Mehta    
+[shashankmehta.in](http://shashankmehta.in)    
+[@leostatic](http://twitter.com/leostatic)
+
+###License
+
+MIT: http://sm.mit-license.org
